@@ -8,12 +8,24 @@ import java.util.Set;
 import com.anderson.catalog.entities.Category;
 import com.anderson.catalog.entities.Product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDTO {
 	private Long id;
+	
+	@NotBlank(message = "Campo requerido")
+	@Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
 	private String name;
 	private String description;
+	
+	@Positive(message = "Preço deve ser positivo")
 	private Double price;
 	private String imgUrl;
+	
+	@PastOrPresent(message = "A data do produto não poder ser futura")
 	private Instant date;
 	
 	private List<CategoryDTO> categories = new ArrayList<>();

@@ -16,41 +16,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.anderson.catalog.dto.ProductDTO;
-import com.anderson.catalog.services.ProductService;
+import com.anderson.catalog.dto.UserDTO;
+import com.anderson.catalog.dto.UserInsertDTO;
+import com.anderson.catalog.services.UserService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/products")
-public class ProductController {
+@RequestMapping("/users")
+public class UserController {
 	@Autowired
-	private ProductService service;
+	private UserService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
+	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable){
 		var list = service.findAll(pageable);
 		return ResponseEntity.ok().body(list);
 	}
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id){
 		var dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
+
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
-		dto = service.insert(dto);
+	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto){
+		UserDTO newDto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
+				.path("/{id}").buildAndExpand(newDto.getId()).toUri();
+		return ResponseEntity.created(uri).body(newDto);
 	}
 	@PutMapping(value="/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid @RequestBody ProductDTO dto){
+	public ResponseEntity<UserDTO> update(@PathVariable Long id,@Valid @RequestBody UserDTO dto){
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<ProductDTO> delele(@PathVariable Long id){
+	public ResponseEntity<UserDTO> delele(@PathVariable Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
