@@ -1,6 +1,10 @@
 package com.anderson.catalog.dto;
 
+import com.anderson.catalog.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
+	private static final long serialVersionUID = 1L;
 	
 	private String password;
 	
